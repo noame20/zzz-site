@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHARACTERS | 绝区零</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --zzz-yellow: #ffd100;
+            --zzz-yellow-dark: #cc9c00;
+            --zzz-orange: #ff6b00;
+            --zzz-red: #ff2d2d;
+            --zzz-black: #0d0d0d;
+            --zzz-dark: #1a1a1a;
+            --zzz-gray: #333333;
+            --zzz-white: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--zzz-black);
+            color: var(--zzz-white);
+            min-height: 100vh;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 209, 0, 0.03) 2px,
+                    rgba(255, 209, 0, 0.03) 4px
+                ),
+                linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 50%, #0d0d0d 100%);
+            z-index: 0;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(13,13,13,0.98) 0%, rgba(13,13,13,0.8) 100%);
+            border-bottom: 2px solid var(--zzz-yellow);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--zzz-yellow);
+            letter-spacing: 8px;
+            text-shadow: 0 0 20px rgba(255, 209, 0, 0.5);
+            animation: logoFlicker 3s infinite;
+        }
+
+        @keyframes logoFlicker {
+            0%, 95%, 100% { opacity: 1; }
+            96% { opacity: 0.8; }
+            97% { opacity: 1; }
+            98% { opacity: 0.6; }
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--zzz-white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 8px 20px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--zzz-yellow);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.2s;
+            z-index: -1;
+        }
+
+        nav a:hover {
+            color: var(--zzz-black);
+            border-color: var(--zzz-yellow);
+        }
+
+        nav a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        nav a.active {
+            background: var(--zzz-yellow);
+            color: var(--zzz-black);
+            border-color: var(--zzz-yellow);
+        }
+
+        .page-header {
+            padding: 150px 40px 60px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--zzz-yellow);
+            letter-spacing: 15px;
+            text-shadow: 3px 3px 0 var(--zzz-orange);
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 5px;
+        }
+
+        .page-subtitle span {
+            color: var(--zzz-yellow);
+        }
+
+        /* Character Grid */
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 20px 60px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .character-card {
+            background: var(--zzz-dark);
+            border: 2px solid var(--zzz-gray);
+            position: relative;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .character-card:hover {
+            border-color: var(--zzz-yellow);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(255, 209, 0, 0.2);
+        }
+
+        /* Card Header with Rank */
+        .char-header {
+            background: linear-gradient(135deg, var(--zzz-gray) 0%, var(--zzz-dark) 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--zzz-gray);
+        }
+
+        .char-rank {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--zzz-yellow);
+            letter-spacing: 2px;
+            padding: 5px 12px;
+            border: 2px solid var(--zzz-yellow);
+        }
+
+        .char-element {
+            font-size: 24px;
+        }
+
+        /* Avatar Area */
+        .char-avatar {
+            height: 200px;
+            background: linear-gradient(180deg, rgba(255, 209, 0, 0.1) 0%, transparent 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+        }
+
+        .char-avatar::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(transparent, var(--zzz-dark));
+        }
+
+        /* Character Info */
+        .char-info {
+            padding: 25px;
+        }
+
+        .char-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--zzz-white);
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .char-title {
+            font-size: 12px;
+            color: var(--zzz-orange);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .char-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+
+        /* Tags */
+        .char-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            background: transparent;
+            border: 1px solid var(--zzz-gray);
+            font-size: 11px;
+            color: var(--zzz-white);
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .tag:hover {
+            border-color: var(--zzz-yellow);
+            color: var(--zzz-yellow);
+        }
+
+        .tag.elem-electric { border-color: #00bfff; color: #00bfff; }
+        .tag.elem-ice { border-color: #00ffff; color: #00ffff; }
+        .tag.elem-physical { border-color: #ff6b6b; color: #ff6b6b; }
+        .tag.elem-fire { border-color: #ff4500; color: #ff4500; }
+        .tag.elem-ether { border-color: #9932cc; color: #9932cc; }
+
+        /* Status Indicator */
+        .char-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 10px;
+            height: 10px;
+            background: var(--zzz-yellow);
+            border-radius: 50%;
+            animation: statusPulse 2s infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 209, 0, 0.7); }
+            50% { box-shadow: 0 0 0 8px rgba(255, 209, 0, 0); }
+        }
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            border-top: 2px solid var(--zzz-gray);
+        }
+
+        footer p {
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <div class="logo">Zzz</div>
+        <nav>
+            <a href="index.html">HOME</a>
+            <a href="characters.html" class="active">CHARACTERS</a>
+            <a href="diary.html">DIARY</a>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1 class="page-title">AGENTS</h1>
+        <p class="page-subtitle">// <span>代理人</span>资料库</p>
+    </div>
+
+    <div class="character-grid">
+        <!-- 猫又 -->
+        <div class="character-card">
+            <div class="char-status"></div>
+            <div class="char-header">
+                <span class="char-rank">A级</span>
+                <span class="char-element">⚡</span>
+            </div>
+            <div class="char-avatar">🐱</div>
+            <div class="char-info">
+                <h2 class="char-name">猫又</h2>
+                <p class="char-title">绳匠 · 录像带店老板</p>
+                <p class="char-desc">
+                    曾是传奇绳匠，如今隐居经营录像带店。外表慵懒实则可靠，是新手代理人的引路人。口头禅：「这个委托，我接了」
+                </p>
+                <div class="char-tags">
+                    <span class="tag elem-electric">电属性</span>
+                    <span class="tag">远程</span>
+                    <span class="tag">物理</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 哲 -->
+        <div class="character-card">
+            <div class="char-status"></div>
+            <div class="char-header">
+                <span class="char-rank">A级</span>
+                <span class="char-element">⚡</span>
+            </div>
+            <div class="char-avatar">🧤</div>
+            <div class="char-info">
+                <h2 class="char-name">哲</h2>
+                <p class="char-title">维多利亚家政</p>
+                <p class="char-desc">
+                    维多利亚家政的王牌员工，擅长将敌人一套带走。战斗风格干净利落，服务也同样专业（？）
+                </p>
+                <div class="char-tags">
+                    <span class="tag elem-electric">电属性</span>
+                    <span class="tag">近战</span>
+                    <span class="tag">强攻</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 安比 -->
+        <div class="character-card">
+            <div class="char-status"></div>
+            <div class="char-header">
+                <span class="char-rank">A级</span>
+                <span class="char-element">❄</span>
+            </div>
+            <div class="char-avatar">🎵</div>
+            <div class="char-info">
+                <h2 class="char-name">安比</h2>
+                <p class="char-title">柏妮斯</p>
+                <p class="char-desc">
+                    拥有偶像外表的沉默少女，实际上是强力战斗型代理人。持有罕见的「击退」属性，一脚踢飞敌人。
+                </p>
+                <div class="char-tags">
+                    <span class="tag elem-ice">冰属性</span>
+                    <span class="tag">平衡</span>
+                    <span class="tag">击退</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 比利 -->
+        <div class="character-card">
+            <div class="char-status"></div>
+            <div class="char-header">
+                <span class="char-rank">A级</span>
+                <span class="char-element">🔫</span>
+            </div>
+            <div class="char-avatar">🎸</div>
+            <div class="char-info">
+                <h2 class="char-name">比利·奇势</h2>
+                <p class="char-title">考什克</p>
+                <p class="char-desc">
+                    自恋的枪手，热爱表演和被关注。战斗时会自动进入「表演模式」，实力大幅提升。口头禅：「欣赏我的英姿吧」
+                </p>
+                <div class="char-tags">
+                    <span class="tag elem-physical">物理</span>
+                    <span class="tag">远程</span>
+                    <span class="tag">强攻</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 妮可 -->
+        <div class="character-card">
+            <div class="char-status"></div>
+            <div class="char-header">
+                <span class="char-rank">A级</span>
+                <span class="char-element">❄</span>
+            </div>
+            <div class="char-avatar">🛡️</div>
+            <div class="char-info">
+                <h2 class="char-name">妮可</h2>
+                <p class="char-title">维多利亚家政</p>
+                <p class="char-desc">
+                    可靠的支援角色，能为队友提供护盾和增益。性格沉稳，是团队的核心支柱。研究员身份待确认。
+                </p>
+                <div class="char-tags">
+                    <span class="tag elem-ice">冰属性</span>
+                    <span class="tag">支援</span>
+                    <span class="tag">防护</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 苍角 -->
+        <div class="character-card">
+            <div class="char-status"></div>
+            <div class="char-header">
+                <span class="char-rank">A级</span>
+                <span class="char-element">🔮</span>
+            </div>
+            <div class="char-avatar">🌙</div>
+            <div class="char-info">
+                <h2 class="char-name">苍角</h2>
+                <p class="char-title">奥波勒斯</p>
+                <p class="char-desc">
+                    谜一般的少年，掌握「湮灭」属性的稀有代理人。战斗风格神秘莫测，让人无法预测下一步行动。
+                </p>
+                <div class="char-tags">
+                    <span class="tag elem-ether">湮灭</span>
+                    <span class="tag">支援</span>
+                    <span class="tag">爆发</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 ZONE ZERO - FAN TRIBUTE</p>
+    </footer>
+</body>
+</html>

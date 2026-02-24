@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZONE ZERO | 绝区零</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --zzz-yellow: #ffd100;
+            --zzz-yellow-dark: #cc9c00;
+            --zzz-orange: #ff6b00;
+            --zzz-red: #ff2d2d;
+            --zzz-black: #0d0d0d;
+            --zzz-dark: #1a1a1a;
+            --zzz-gray: #333333;
+            --zzz-white: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--zzz-black);
+            color: var(--zzz-white);
+            overflow-x: hidden;
+        }
+
+        /* ZZZ Style Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 209, 0, 0.03) 2px,
+                    rgba(255, 209, 0, 0.03) 4px
+                ),
+                linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 50%, #0d0d0d 100%);
+            z-index: 0;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(13,13,13,0.98) 0%, rgba(13,13,13,0.8) 100%);
+            border-bottom: 2px solid var(--zzz-yellow);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--zzz-yellow);
+            letter-spacing: 8px;
+            text-shadow: 0 0 20px rgba(255, 209, 0, 0.5);
+            animation: logoFlicker 3s infinite;
+        }
+
+        @keyframes logoFlicker {
+            0%, 95%, 100% { opacity: 1; }
+            96% { opacity: 0.8; }
+            97% { opacity: 1; }
+            98% { opacity: 0.6; }
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--zzz-white);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 8px 20px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--zzz-yellow);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.2s;
+            z-index: -1;
+        }
+
+        nav a:hover {
+            color: var(--zzz-black);
+            border-color: var(--zzz-yellow);
+        }
+
+        nav a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        nav a.active {
+            background: var(--zzz-yellow);
+            color: var(--zzz-black);
+            border-color: var(--zzz-yellow);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 120px 20px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ZZZ Style Title Box */
+        .title-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .title-box {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 100px;
+            font-weight: 900;
+            letter-spacing: 30px;
+            color: var(--zzz-yellow);
+            text-shadow: 
+                4px 4px 0 var(--zzz-orange),
+                -2px -2px 0 var(--zzz-red);
+            animation: titleGlitch 5s infinite;
+            position: relative;
+        }
+
+        @keyframes titleGlitch {
+            0%, 90%, 100% {
+                text-shadow: 
+                    4px 4px 0 var(--zzz-orange),
+                    -2px -2px 0 var(--zzz-red);
+                transform: translate(0);
+            }
+            91% {
+                text-shadow: 
+                    -3px 0 var(--zzz-red),
+                    3px 0 var(--zzz-orange);
+                transform: translate(-2px, 1px);
+            }
+            92% {
+                text-shadow: 
+                    3px 0 var(--zzz-red),
+                    -3px 0 var(--zzz-orange);
+                transform: translate(2px, -1px);
+            }
+            93% {
+                text-shadow: 
+                    4px 4px 0 var(--zzz-orange),
+                    -2px -2px 0 var(--zzz-red);
+                transform: translate(0);
+            }
+        }
+
+        .title-sub {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--zzz-white);
+            letter-spacing: 15px;
+            text-align: center;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        /* ZZZ Style Alert Box */
+        .alert-box {
+            background: var(--zzz-dark);
+            border: 3px solid var(--zzz-yellow);
+            padding: 25px 40px;
+            max-width: 700px;
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .alert-box::before {
+            content: '⚠ WARNING';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--zzz-yellow);
+            color: var(--zzz-black);
+            font-size: 12px;
+            font-weight: 900;
+            padding: 2px 10px;
+            letter-spacing: 2px;
+        }
+
+        .alert-box::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid var(--zzz-yellow);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .alert-text {
+            font-size: 15px;
+            line-height: 2;
+            color: var(--zzz-white);
+            text-align: center;
+        }
+
+        .alert-text .highlight {
+            color: var(--zzz-yellow);
+            font-weight: 700;
+        }
+
+        /* CTA Button */
+        .cta-btn {
+            display: inline-block;
+            padding: 18px 60px;
+            background: var(--zzz-yellow);
+            color: var(--zzz-black);
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            animation: btnPulse 2s infinite;
+        }
+
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 209, 0, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(255, 209, 0, 0); }
+        }
+
+        .cta-btn:hover {
+            background: var(--zzz-orange);
+            transform: scale(1.05);
+        }
+
+        /* Info Cards */
+        .info-section {
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            color: var(--zzz-yellow);
+            letter-spacing: 5px;
+            margin-bottom: 40px;
+            padding-left: 20px;
+            border-left: 5px solid var(--zzz-yellow);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .zzz-card {
+            background: var(--zzz-dark);
+            border: 2px solid var(--zzz-gray);
+            padding: 25px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zzz-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--zzz-yellow);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .zzz-card:hover {
+            border-color: var(--zzz-yellow);
+            transform: translateY(-5px);
+        }
+
+        .zzz-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--zzz-yellow);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px;
+            text-align: center;
+            border-top: 2px solid var(--zzz-gray);
+            margin-top: 60px;
+        }
+
+        footer p {
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Decorative Elements */
+        .deco-line {
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--zzz-yellow), transparent);
+            margin: 30px auto;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--zzz-red);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            animation: statusBlink 1s infinite;
+        }
+
+        @keyframes statusBlink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <div class="logo">Zzz</div>
+        <nav>
+            <a href="index.html" class="active">HOME</a>
+            <a href="characters.html">CHARACTERS</a>
+            <a href="diary.html">DIARY</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="title-container">
+            <h1 class="title-box">ZONE ZERO</h1>
+            <p class="title-sub">绝 区 零</p>
+        </div>
+
+        <div class="alert-box">
+            <p class="alert-text">
+                欢迎来到新艾利都——<span class="highlight">最后的避风港</span><br>
+                空洞灾害持续蔓延，人类文明危在旦夕<br>
+                成为代理人，穿越空洞，守护这座城市
+            </p>
+        </div>
+
+        <a href="characters.html" class="cta-btn">▶ START</a>
+
+        <div class="deco-line"></div>
+
+        <span class="status-badge">SYSTEM ONLINE</span>
+    </section>
+
+    <section class="info-section">
+        <h2 class="section-title">// SYSTEM INFO</h2>
+        <div class="cards-grid">
+            <div class="zzz-card">
+                <div class="card-icon">⚔</div>
+                <h3 class="card-title">即时战斗</h3>
+                <p class="card-desc">实时动作系统，极限闪避+连携技，打出华丽combo</p>
+            </div>
+            <div class="zzz-card">
+                <div class="card-icon">🏙</div>
+                <h3 class="card-title">新艾利都</h3>
+                <p class="card-desc">探索最后的都市，在街道中寻找隐藏的商机与秘密</p>
+            </div>
+            <div class="zzz-card">
+                <div class="card-icon">🎭</div>
+                <h3 class="card-title">代理人</h3>
+                <p class="card-desc">结识性格各异的代理人，组建你的专属小队</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 ZONE ZERO - FAN TRIBUTE</p>
+        <p>Game content © COGITO / miHoYo</p>
+    </footer>
+</body>
+</html>

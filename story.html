@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story - 绝区零</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #9d4edd;
+            --secondary: #00f5d4;
+            --accent: #ff006e;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --light: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(157, 78, 221, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(157, 78, 221, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-1 {
+            top: 50%;
+            left: 10%;
+            background: var(--primary);
+        }
+
+        .glow-2 {
+            top: 30%;
+            right: 10%;
+            background: var(--secondary);
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(10,10,15,0.95) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--secondary);
+        }
+
+        .page-title {
+            padding: 150px 20px 50px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: 10px;
+            background: linear-gradient(135deg, var(--light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .page-title p {
+            color: rgba(255,255,255,0.5);
+            font-size: 16px;
+            letter-spacing: 5px;
+        }
+
+        .timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary), var(--accent));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1), rgba(5, 5, 8, 0.8));
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--secondary);
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -12%;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -12%;
+        }
+
+        .timeline-year {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .timeline-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .story-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-card {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(5, 5, 8, 0.9));
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .story-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .story-card h2::before {
+            content: '';
+            width: 5px;
+            height: 25px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .story-card p {
+            font-size: 15px;
+            line-height: 2;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .data-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .data-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(157, 78, 221, 0.2);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .data-list li span:first-child {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .data-list li span:last-child {
+            color: var(--secondary);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <div class="logo">Zzz</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="characters.html">Characters</a>
+            <a href="story.html" class="active">Story</a>
+        </nav>
+    </header>
+
+    <div class="page-title">
+        <h1>STORY</h1>
+        <p>世界观与历史</p>
+    </div>
+
+    <div class="story-section">
+        <div class="story-card">
+            <h2>🌃 新艾利都</h2>
+            <p>
+                <span class="highlight">新艾利都</span>——最后的避风港，一座建立在灾难之上的都市。
+            </p>
+            <p>
+                在「空洞」灾祸蔓延的今天，这座城市成为了人类最后的堡垒。环绕城市的「隔环」阻挡着空洞的侵蚀，而城市内部则保持着相对的繁荣与秩序。
+            </p>
+            <p>
+                在这里，<span class="highlight">绳匠</span>是一种特殊职业——他们穿梭于空洞与现实之间，为城市运输物资、探索未知、完成任务。是城市运转不可或缺的力量。
+            </p>
+        </div>
+
+        <div class="story-card">
+            <h2>💫 空洞</h2>
+            <p>
+                <span class="highlight">空洞</span>——神秘的空间现象，人类已知的最致命威胁。
+            </p>
+            <p>
+                空洞内部是一个与现实截然不同的异空间，存在着被称为「以太」的特殊物质，以及以「假想敌」形态出现的未知生物。进入空洞的人类，如果没有特殊手段，将会迷失其中。
+            </p>
+            <ul class="data-list">
+                <li><span>危险等级</span><span>Lv.1 - Lv.65</span></li>
+                <li><span>主要产物</span><span>以太碎片、贵金属</span></li>
+                <li><span>进入方式</span><span>绳索连接</span></li>
+            </ul>
+        </div>
+
+        <div class="story-card">
+            <h2>🎭 代理人</h2>
+            <p>
+                <span class="highlight">代理人</span>——穿梭于空洞的战士，城市的守护者。
+            </p>
+            <p>
+                他们拥有进入空洞的能力，使用特殊的武器和技能与假想敌战斗。代理人分为不同等级，从C级到SSS级，等级越高，实力越强。
+            </p>
+            <p>
+                每个代理人都有独特的<span class="highlight">属性</span>——电、冰、物理、火、湮灭、风、岩。每种属性都有其独特的战斗优势。
+            </p>
+        </div>
+    </div>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">2020</div>
+                <div class="timeline-title">空洞首次出现</div>
+                <div class="timeline-desc">
+                    世界各地开始出现神秘的空间异常现象，人类第一次见识到「空洞」的恐怖。
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-title">新艾利都建立</div>
+                <div class="timeline-desc">
+                    在灾难中幸存的人类建立最后的城市——新艾利都。「隔环」系统开始运作。
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">2030</div>
+                <div class="timeline-title">绳匠职业诞生</div>
+                <div class="timeline-desc">
+                    掌握空洞穿梭技术的专业人员出现，绳匠成为城市运转的关键职业。
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">现在</div>
+                <div class="timeline-title">你的故事开始</div>
+                <div class="timeline-desc">
+                    作为新晋代理人，你将探索空洞的奥秘，揭开隐藏的真相。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 ZONE ZERO. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
